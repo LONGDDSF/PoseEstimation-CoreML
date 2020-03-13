@@ -72,6 +72,7 @@ class JointViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.videoCapture.start()
+        setupScene()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -118,6 +119,19 @@ class JointViewController: UIViewController {
     func resizePreviewLayer() {
         videoCapture.previewLayer?.frame = videoPreview.bounds
     }
+    
+    func setupScene() {
+        // Present the scene
+        let sceneView = HeroSKView()
+        
+        sceneView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+        videoPreview.addSubview(sceneView)
+        
+        sceneView.setup()
+        
+        jointView.delegate = sceneView
+    }
+    
 }
 
 // MARK: - VideoCaptureDelegate
@@ -205,7 +219,8 @@ extension JointViewController {
     }
     
     func showKeypointsDescription(with n_kpoints: [PredictedPoint?]) {
-        self.tableData = n_kpoints
+//        self.tableData = n_kpoints
+        self.tableData = [n_kpoints[4],n_kpoints[7]]
         self.labelsTableView.reloadData()
     }
 }
