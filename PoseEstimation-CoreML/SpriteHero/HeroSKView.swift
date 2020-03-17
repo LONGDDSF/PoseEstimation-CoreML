@@ -27,13 +27,13 @@ class HeroSKView: SKView {
         self.ignoresSiblingOrder = true
         self.showsFPS = false
         self.showsNodeCount = true
-        
+
         setupScene()
     }
     
     func setupScene() {
-        heroScene = HeroScene(size: CGSize(width:self.frame.size.width, height: self.frame.size.height))
-        heroScene.scaleMode = .aspectFit
+        heroScene = HeroScene(size: CGSize(width:self.bounds.size.width, height: self.bounds.size.height))
+        heroScene.scaleMode = .aspectFill
         presentScene(heroScene)
     }
 }
@@ -41,9 +41,9 @@ class HeroSKView: SKView {
 extension HeroSKView : PosePosionDelegate{
     
     func poseDidCheckedPosion(leftWrist: CGPoint, rightWrist: CGPoint, referView: UIWindow) {
-        print(leftWrist,rightWrist)
-        
-        heroScene.updateBoomPositon(point: leftWrist)
+        let p_in_self = referView.convert(leftWrist, to: self)
+        let p_in_scene = convert(p_in_self, to: heroScene)
+        heroScene.updatefistNodePositon(point: p_in_scene)
     }
     
 }

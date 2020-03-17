@@ -17,7 +17,7 @@ class DrawingJointView: UIView {
     
     public weak var delegate: PosePosionDelegate?
     
-    static let threshold = 0.8
+    static let threshold = 0.23
     
     // the count of array may be <#14#> when use PoseEstimationForMobile's model
     private var keypointLabelBGViews: [UIView] = []
@@ -42,30 +42,17 @@ class DrawingJointView: UIView {
             view.layer.borderColor = UIColor.black.cgColor
             view.layer.borderWidth = 1.4
             
-//            let label = UILabel(frame: CGRect(x: pointSize.width * 1.4, y: 0, width: 100, height: pointSize.height))
-//            label.text = PoseEstimationForMobileConstant.pointLabels[index%PoseEstimationForMobileConstant.colors.count]
-//            label.textColor = color
-//            label.font = UIFont.preferredFont(forTextStyle: .caption2)
-//            view.addSubview(label)
+            let label = UILabel(frame: CGRect(x: pointSize.width * 1.4, y: 0, width: 100, height: pointSize.height))
+            label.text = PoseEstimationForMobileConstant.pointLabels[index%PoseEstimationForMobileConstant.colors.count]
+            label.textColor = color
+            label.font = UIFont.preferredFont(forTextStyle: .caption2)
+            view.addSubview(label)
             self.addSubview(view)
             return view
         }
-        
-        //var x: CGFloat = 0.0
-        //let y: CGFloat = self.frame.size.height - 24
-        //let _ = (0..<keypointsCount).map { index in
-        //    let color = Constant.colors[index%Constant.colors.count]
-        //    if index == 2 || index == 8 { x += 28 }
-        //    else { x += 14 }
-        //    let view = UIView(frame: CGRect(x: x, y: y + 10, width: 4, height: 4))
-        //    view.backgroundColor = color
-        //
-        //    self.addSubview(view)
-        //    return
-        //}
     }
     
-    /*
+    
     override func draw(_ rect: CGRect) {
         if let ctx = UIGraphicsGetCurrentContext() {
             
@@ -88,7 +75,7 @@ class DrawingJointView: UIView {
             }
         }
     }
- */
+ 
     
     private func drawLine(ctx: CGContext, from p1: CGPoint, to p2: CGPoint, color: CGColor) {
         ctx.setStrokeColor(color)
@@ -111,17 +98,18 @@ class DrawingJointView: UIView {
         let minC: Double = 0.1
         
 //        let customKeyPoint = n_kpoints[2...7]
-        let customKeyPoint = [n_kpoints[4],n_kpoints[7]]
+//        let customKeyPoint = [n_kpoints[0],n_kpoints[1]]
+        let customKeyPoint = n_kpoints
         
         
         if customKeyPoint.count != keypointLabelBGViews.count {
             setUpLabels(with: customKeyPoint.count)
         }
         
+        var c_point_left = CGPoint(x: 0, y: 0)
+        var c_point_right = CGPoint(x: 0, y: 0)
+        
         for (index, kp) in customKeyPoint.enumerated() {
-            var c_point_left = CGPoint(x: 0, y: 0)
-            var c_point_right = CGPoint(x: 0, y: 0)
-            
             if let n_kp = kp {
                 let x = n_kp.maxPoint.x * imageFrame.width
                 let y = n_kp.maxPoint.y * imageFrame.height
@@ -130,7 +118,6 @@ class DrawingJointView: UIView {
                 keypointLabelBGViews[index].alpha = (maxAlpha - minAlpha) * CGFloat(cRate) + minAlpha
                 
                 let point = referView?.convert(CGPoint(x: x, y: y), to: window)
-                
                 if index == 0 {
                     c_point_left = point ?? CGPoint(x: 10000, y: 10000)
                 }else{
@@ -141,49 +128,55 @@ class DrawingJointView: UIView {
                 keypointLabelBGViews[index].center = CGPoint(x: -4000, y: -4000)
                 keypointLabelBGViews[index].alpha = minAlpha
             }
-            
+        }
+        
+        if let bp1 = customKeyPoint[0], bp1.maxConfidence > DrawingJointView.threshold,
+            let bp2 = customKeyPoint[1], bp2.maxConfidence > DrawingJointView.threshold {
+
             self.delegate?.poseDidCheckedPosion(leftWrist: c_point_left, rightWrist: c_point_right, referView:window ?? UIWindow())
         }
+        
+//         self.delegate?.poseDidCheckedPosion(leftWrist: c_point_left, rightWrist: c_point_right, referView:window ?? UIWindow())
     }
 }
 
 // MARK: - Constant for edvardHua/PoseEstimationForMobile
 struct PoseEstimationForMobileConstant {
     static let pointLabels = [
-//        "top",          //0
-//        "neck",         //1
-//
-//        "R shoulder",   //2
-//        "R elbow",      //3
+        "top",          //0
+        "neck",         //1
+
+        "R shoulder",   //2
+        "R elbow",      //3
         "R wrist",      //4
-//        "L shoulder",   //5
-//        "L elbow",      //6
+        "L shoulder",   //5
+        "L elbow",      //6
         "L wrist",      //7
         
-//        "R hip",        //8
-//        "R knee",       //9
-//        "R ankle",      //10
-//        "L hip",        //11
-//        "L knee",       //12
-//        "L ankle",      //13
+        "R hip",        //8
+        "R knee",       //9
+        "R ankle",      //10
+        "L hip",        //11
+        "L knee",       //12
+        "L ankle",      //13
     ]
     
     static let connectedPointIndexPairs: [(Int, Int)] = [
-//        (0, 1),     // top-neck
+        (0, 1),     // top-neck
         
-//        (1, 2),     // neck-rshoulder
-//        (2, 3),     // rshoulder-relbow
+        (1, 2),     // neck-rshoulder
+        (2, 3),     // rshoulder-relbow
         (3, 4),     // relbow-rwrist
-//        (1, 8),     // neck-rhip
-//        (8, 9),     // rhip-rknee
-//        (9, 10),    // rknee-rankle
+        (1, 8),     // neck-rhip
+        (8, 9),     // rhip-rknee
+        (9, 10),    // rknee-rankle
         
-//        (1, 5),     // neck-lshoulder
-//        (5, 6),     // lshoulder-lelbow
+        (1, 5),     // neck-lshoulder
+        (5, 6),     // lshoulder-lelbow
         (6, 7),     // lelbow-lwrist
-//        (1, 11),    // neck-lhip
-//        (11, 12),   // lhip-lknee
-//        (12, 13),   // lknee-lankle
+        (1, 11),    // neck-lhip
+        (11, 12),   // lhip-lknee
+        (12, 13),   // lknee-lankle
     ]
     static let jointLineColor: UIColor = UIColor(red: 26.0/255.0, green: 187.0/255.0, blue: 229.0/255.0, alpha: 0.8)
     

@@ -124,14 +124,14 @@ class JointViewController: UIViewController {
         // Present the scene
         let sceneView = HeroSKView()
         
-        sceneView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+        sceneView.frame = CGRect(x: 0, y: 0, width: videoPreview.frame.size.width, height: videoPreview.frame.size.height)
+        
         videoPreview.addSubview(sceneView)
         
         sceneView.setup()
         
         jointView.delegate = sceneView
     }
-    
 }
 
 // MARK: - VideoCaptureDelegate
@@ -175,7 +175,7 @@ extension JointViewController {
 
             /* =================================================================== */
             /* ========================= post-processing ========================= */
-
+ 
             /* ------------------ convert heatmap to point array ----------------- */
             var predictedPoints = postProcessor.convertToPredictedPoints(from: heatmaps)
 
