@@ -16,7 +16,7 @@ class HeatmapPostProcessor {
     
     var onlyBust: Bool = false
     
-    func convertToPredictedPoints(from heatmaps: MLMultiArray, isFlipped: Bool = false) -> [PredictedPoint?] {
+        func convertToPredictedPoints(from heatmaps: MLMultiArray, isFlipped: Bool = false) -> [PredictedPoint?] {
         guard heatmaps.shape.count >= 3 else {
             print("heatmap's shape is invalid. \(heatmaps.shape)")
             return []
