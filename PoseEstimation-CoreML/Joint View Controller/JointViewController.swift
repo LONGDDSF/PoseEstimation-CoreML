@@ -9,6 +9,7 @@
 import UIKit
 import Vision
 import CoreMedia
+import AVFoundation
 import os.signpost
 
 class JointViewController: UIViewController {
@@ -32,6 +33,7 @@ class JointViewController: UIViewController {
     
     // MARK: - AV Property
     var videoCapture: VideoCapture!
+    let videoCameraBack = true
     
     // MARK: - ML Properties
     // Core ML model
@@ -47,6 +49,9 @@ class JointViewController: UIViewController {
     
     // Inference Result Data
     private var tableData: [PredictedPoint?] = []
+    
+    // game
+    var sceneView: HeroSKView!
     
     // MARK: - View Controller Life Cycle
     override func viewDidLoad() {
@@ -72,7 +77,7 @@ class JointViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.videoCapture.start()
-        setupScene()
+//        setupScene()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -96,7 +101,8 @@ class JointViewController: UIViewController {
         videoCapture = VideoCapture()
         videoCapture.delegate = self
         videoCapture.fps = 30
-        videoCapture.setUp(sessionPreset: .vga640x480) { success in
+        let  position = videoCameraBack ? AVCaptureDevice.Position.back : AVCaptureDevice.Position.front
+        videoCapture.setUp(sessionPreset: .vga640x480, cameraPosition:position ) { success in
             
             if success {
                 // add preview view on the layer
@@ -118,13 +124,15 @@ class JointViewController: UIViewController {
     
     func resizePreviewLayer() {
         videoCapture.previewLayer?.frame = videoPreview.bounds
+        sceneView?.frame = CGRect(x: 0, y: 0, width: videoPreview.frame.size.width, height: videoPreview.frame.size.height)
     }
     
     func setupScene() {
         // Present the scene
-        let sceneView = HeroSKView()
-        
+        sceneView = HeroSKView()
         sceneView.frame = CGRect(x: 0, y: 0, width: videoPreview.frame.size.width, height: videoPreview.frame.size.height)
+
+//        sceneView.frame = CGRect(x: 0, y: 0, width: 768, height: 912)
         
         videoPreview.addSubview(sceneView)
         
@@ -156,7 +164,7 @@ extension JointViewController {
     func predictUsingVision(pixelBuffer: CVPixelBuffer) {
         guard let request = request else { fatalError() }
         // vision framework configures the input size of image following our model's input configuration automatically
-        let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer)
+        let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: CGImagePropertyOrientation.up)
         
         if #available(iOS 12.0, *) {
             os_signpost(.begin, log: refreshLog, name: "PoseEstimation")
@@ -177,7 +185,7 @@ extension JointViewController {
             /* ========================= post-processing ========================= */
  
             /* ------------------ convert heatmap to point array ----------------- */
-            var predictedPoints = postProcessor.convertToPredictedPoints(from: heatmaps)
+            var predictedPoints = postProcessor.convertToPredictedPoints(from: heatmaps, isFlipped: !videoCameraBack)
 
             /* --------------------- moving average filter ----------------------- */
             if predictedPoints.count != mvfilters.count {
