@@ -16,7 +16,7 @@ class HeatmapPostProcessor {
     
     var onlyBust: Bool = false
     
-        func convertToPredictedPoints(from heatmaps: MLMultiArray, isFlipped: Bool = false) -> [PredictedPoint?] {
+    func convertToPredictedPoints(from heatmaps: MLMultiArray, isFlipped: Bool = false) -> [PredictedPoint?] {
         guard heatmaps.shape.count >= 3 else {
             print("heatmap's shape is invalid. \(heatmaps.shape)")
             return []
@@ -49,7 +49,7 @@ class HeatmapPostProcessor {
         
         //print(maxvalue, minvalue)
         
-//        print(n_kpoints.first??.maxPoint.x ?? -1, n_kpoints.first??.maxPoint.y ?? -1)
+    //        print(n_kpoints.first??.maxPoint.x ?? -1, n_kpoints.first??.maxPoint.y ?? -1)
         
         // transpose to (1.0, 1.0)
         n_kpoints = n_kpoints.map { kpoint -> PredictedPoint? in
