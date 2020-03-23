@@ -24,8 +24,6 @@
 		6EC2AD55241BD0090003A68D /* fist@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EC2AD54241BD0090003A68D /* fist@2x.png */; };
 		6EC2AD58241BDD1F0003A68D /* basketry@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EC2AD56241BDD1E0003A68D /* basketry@2x.png */; };
 		6EC2AD59241BDD1F0003A68D /* basketball@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EC2AD57241BDD1F0003A68D /* basketball@2x.png */; };
-		6EF6E6EB242121DA00379084 /* 11152.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6EF6E6EA242121D900379084 /* 11152.mp3 */; };
-		6EF6E6ED2421289200379084 /* 11970.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6EF6E6EC2421289100379084 /* 11970.mp3 */; };
 		714087F32302E7AC00F7EDF4 /* PoseMatchingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714087F22302E7AC00F7EDF4 /* PoseMatchingViewController.swift */; };
 		714D590F2377F87A00BBE1DC /* HeatmapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D590E2377F87A00BBE1DC /* HeatmapsViewController.swift */; };
 		7165F7592271772A0010F164 /* StillImageHeatmapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7165F7582271772A0010F164 /* StillImageHeatmapViewController.swift */; };
@@ -36,6 +34,9 @@
 		71F1455422F1C890000ED787 /* model_hourglass.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 71F1455222F1C890000ED787 /* model_hourglass.mlmodel */; };
 		71F3DAE223659D7400DB67F8 /* model_cpm.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 71F1455122F1C890000ED787 /* model_cpm.mlmodel */; };
 		71F3DAE323659D7700DB67F8 /* model_hourglass.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 71F1455222F1C890000ED787 /* model_hourglass.mlmodel */; };
+		C0170D002428AC560094FA29 /* exploded.atlas in Resources */ = {isa = PBXBuildFile; fileRef = C0170CFF2428AC560094FA29 /* exploded.atlas */; };
+		C0170D022428AC7C0094FA29 /* bomb.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C0170D012428AC7C0094FA29 /* bomb.mp3 */; };
+		C0170D042428ACDC0094FA29 /* Music.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0170D032428ACDC0094FA29 /* Music.swift */; };
 		C04A8F06241B801E0091B921 /* hero@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C04A8F03241B801E0091B921 /* hero@2x.png */; };
 		C04A8F07241B801E0091B921 /* HeroSKView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A8F04241B801E0091B921 /* HeroSKView.swift */; };
 		C04A8F08241B801E0091B921 /* HeroScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A8F05241B801E0091B921 /* HeroScene.swift */; };
@@ -71,8 +72,6 @@
 		6EC2AD54241BD0090003A68D /* fist@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fist@2x.png"; sourceTree = "<group>"; };
 		6EC2AD56241BDD1E0003A68D /* basketry@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "basketry@2x.png"; sourceTree = "<group>"; };
 		6EC2AD57241BDD1F0003A68D /* basketball@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "basketball@2x.png"; sourceTree = "<group>"; };
-		6EF6E6EA242121D900379084 /* 11152.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 11152.mp3; sourceTree = "<group>"; };
-		6EF6E6EC2421289100379084 /* 11970.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 11970.mp3; sourceTree = "<group>"; };
 		714087F22302E7AC00F7EDF4 /* PoseMatchingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseMatchingViewController.swift; sourceTree = "<group>"; };
 		714D590E2377F87A00BBE1DC /* HeatmapsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeatmapsViewController.swift; sourceTree = "<group>"; };
 		7165F7582271772A0010F164 /* StillImageHeatmapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StillImageHeatmapViewController.swift; sourceTree = "<group>"; };
@@ -81,6 +80,9 @@
 		71EF2DC422C4878D009391C8 /* PredictedPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictedPoint.swift; sourceTree = "<group>"; };
 		71F1455122F1C890000ED787 /* model_cpm.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = model_cpm.mlmodel; sourceTree = "<group>"; };
 		71F1455222F1C890000ED787 /* model_hourglass.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = model_hourglass.mlmodel; sourceTree = "<group>"; };
+		C0170CFF2428AC560094FA29 /* exploded.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = exploded.atlas; sourceTree = "<group>"; };
+		C0170D012428AC7C0094FA29 /* bomb.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bomb.mp3; sourceTree = "<group>"; };
+		C0170D032428ACDC0094FA29 /* Music.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Music.swift; sourceTree = "<group>"; };
 		C04A8F03241B801E0091B921 /* hero@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hero@2x.png"; sourceTree = "<group>"; };
 		C04A8F04241B801E0091B921 /* HeroSKView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroSKView.swift; sourceTree = "<group>"; };
 		C04A8F05241B801E0091B921 /* HeroScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroScene.swift; sourceTree = "<group>"; };
@@ -202,14 +204,15 @@
 		C04A8F02241B801E0091B921 /* SpriteHero */ = {
 			isa = PBXGroup;
 			children = (
+				C0170CFF2428AC560094FA29 /* exploded.atlas */,
 				C04A8F03241B801E0091B921 /* hero@2x.png */,
 				6EC2AD54241BD0090003A68D /* fist@2x.png */,
 				6EC2AD57241BDD1F0003A68D /* basketball@2x.png */,
 				6EC2AD56241BDD1E0003A68D /* basketry@2x.png */,
 				C04A8F04241B801E0091B921 /* HeroSKView.swift */,
 				C04A8F05241B801E0091B921 /* HeroScene.swift */,
-				6EF6E6EC2421289100379084 /* 11970.mp3 */,
-				6EF6E6EA242121D900379084 /* 11152.mp3 */,
+				C0170D032428ACDC0094FA29 /* Music.swift */,
+				C0170D012428AC7C0094FA29 /* bomb.mp3 */,
 			);
 			path = SpriteHero;
 			sourceTree = "<group>";
@@ -305,10 +308,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				557F531D20ED252400CFCCD7 /* LaunchScreen.storyboard in Resources */,
-				6EF6E6EB242121DA00379084 /* 11152.mp3 in Resources */,
+				C0170D002428AC560094FA29 /* exploded.atlas in Resources */,
+				C0170D022428AC7C0094FA29 /* bomb.mp3 in Resources */,
 				6EC2AD59241BDD1F0003A68D /* basketball@2x.png in Resources */,
 				6EC2AD58241BDD1F0003A68D /* basketry@2x.png in Resources */,
-				6EF6E6ED2421289200379084 /* 11970.mp3 in Resources */,
 				6EC2AD55241BD0090003A68D /* fist@2x.png in Resources */,
 				557F531A20ED252400CFCCD7 /* Assets.xcassets in Resources */,
 				C04A8F06241B801E0091B921 /* hero@2x.png in Resources */,
@@ -342,6 +345,7 @@
 				7165F7592271772A0010F164 /* StillImageHeatmapViewController.swift in Sources */,
 				55AAFB1E21128AB6000B21A3 /* DrawingHeatmapView.swift in Sources */,
 				71F1455422F1C890000ED787 /* model_hourglass.mlmodel in Sources */,
+				C0170D042428ACDC0094FA29 /* Music.swift in Sources */,
 				557F532720ED25B000CFCCD7 /* VideoCapture.swift in Sources */,
 				555B477421F61234009026AB /* DrawingJointView.swift in Sources */,
 				714D590F2377F87A00BBE1DC /* HeatmapsViewController.swift in Sources */,
