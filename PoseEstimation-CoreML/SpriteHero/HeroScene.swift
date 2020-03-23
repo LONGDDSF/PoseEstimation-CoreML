@@ -12,6 +12,7 @@ import AVFoundation
 
 let enemyCategory: UInt32 = 0x1 << 0
 let fistCategory: UInt32 = 0x1 << 1
+let floorCategory: UInt32 = 0x1 << 2
 
 class HeroScene: SKScene {
     
@@ -27,10 +28,12 @@ class HeroScene: SKScene {
         
         addfistNode()
         
+        addFloor()
+        
         repeatEnemy()
     
     }
-    
+    /// MARK: 场景设置
     func setupScene() {
         self.backgroundColor = SKColor(red: 80.0/255.0, green: 192.0/255.0, blue: 203.0/255.0, alpha: 1.0)
         self.backgroundColor = SKColor.clear
@@ -38,21 +41,7 @@ class HeroScene: SKScene {
         self.physicsWorld.contactDelegate = self
     }
     
-    // 声音
-    var audioPlayer : AVAudioPlayer = {
-         var player : AVAudioPlayer?
-         let mp3Path = Bundle.main.path(forResource: "11970", ofType: "mp3")   //bgm自己放一首进去就好
-         let pathURL = NSURL.fileURL(withPath: mp3Path!)
-         try? player = AVAudioPlayer(contentsOf: pathURL)
-         return player!
-     }()
-    
-    func playMusic() {
-        audioPlayer.numberOfLoops = 1
-        audioPlayer.play()
-    }
-    
-    // 分数
+    /// MARK: 分数
     lazy var scoreLabelNode:SKLabelNode = {
         let label = SKLabelNode(fontNamed: "MarkerFelt-Wide")
         label.zPosition = 100
@@ -72,7 +61,7 @@ class HeroScene: SKScene {
         scoreLabelNode.text = "\(score)" + "分"
     }
     
-    // 添加一个敌人
+    /// MARK: 添加敌人
     func addEnemy() {
         let enemy = SKSpriteNode(texture: SKTexture(imageNamed: "hero"))
         enemy.size = CGSize(width: 60, height: 60)
@@ -88,13 +77,12 @@ class HeroScene: SKScene {
         enemy.position = CGPoint(x:CGFloat(randomX),y:winSize.height + enemy.size.height/2);
         enemy.physicsBody = SKPhysicsBody(rectangleOf: enemy.size)
         enemy.physicsBody?.categoryBitMask = enemyCategory
-        enemy.physicsBody?.contactTestBitMask = fistCategory
-        enemy.physicsBody?.collisionBitMask = fistCategory
+        enemy.physicsBody?.contactTestBitMask = fistCategory | floorCategory
+        enemy.physicsBody?.collisionBitMask = fistCategory | floorCategory
         // 进场
         addChild(enemy)
     }
     
-    // 重复添加敌人
     func repeatEnemy() {
         let actionAddEnemy = SKAction.run {
             self.addEnemy()
@@ -103,7 +91,7 @@ class HeroScene: SKScene {
         run(SKAction.repeatForever(SKAction.sequence([actionAddEnemy,actionWaitNextEnemy])))
     }
     
-    // 添加拳头
+    /// MARK: 添加拳头
     func addfistNode() {
         fistNode = SKSpriteNode(texture: SKTexture(imageNamed: "fist"))
         fistNode.size = CGSize(width: 40, height: 40)
@@ -118,9 +106,52 @@ class HeroScene: SKScene {
         
         addChild(fistNode)
     }
+    
+    //MARK:爆炸效果
+    func explode(point:CGPoint) {
+        let explodeAtlas = SKTextureAtlas.init(named: "exploded")
+        let allTextureArray = NSMutableArray.init(capacity: 16)
+        for i in 0..<explodeAtlas.textureNames.count {
+            let textureName = String(format: "%d@2x.png", arguments: [i+1])
+            let texture = explodeAtlas.textureNamed(textureName)
+            allTextureArray.add(texture)
+        }
+        let bombNode = SKSpriteNode(texture: allTextureArray[0] as? SKTexture)
+        bombNode.position = point
+        bombNode.name = "bomb"
+        bombNode.size = CGSize(width: 50, height: 50)
+        bombNode.zPosition = 2.0
+        self.addChild(bombNode)
+        
+        //爆炸效果动画
+        let animationAction = SKAction.animate(with: allTextureArray as! [SKTexture], timePerFrame: 0.05)
+        let sound = Music()
+        let soundAction = SKAction.run {
+            sound.bomb()
+        }
+        bombNode.run(SKAction.group([animationAction,soundAction])) {
+            bombNode.removeFromParent()
+        }
+    }
+    
+    func addFloor(){
+        floorNode = SKSpriteNode(imageNamed:"hero")
+        floorNode.position = CGPoint(x: 0, y: 0)
+        floorNode.size = CGSize(width:10000, height: 10)
+        floorNode.physicsBody = SKPhysicsBody(rectangleOf:floorNode.size)
+        floorNode.physicsBody?.affectedByGravity = false
+        floorNode.physicsBody?.allowsRotation = false
+        floorNode.physicsBody?.isDynamic = false
+        
+        floorNode.physicsBody?.categoryBitMask = floorCategory
+        floorNode.physicsBody?.contactTestBitMask = enemyCategory
+        floorNode.physicsBody?.collisionBitMask = enemyCategory
+        
+        addChild(floorNode)
+    }
 }
 
-// 更新拳头位置
+/// MARK: 更新拳头位置
 extension HeroScene{
    func updatefistNodePositon(point:CGPoint)  {
         if point.x > 0 && point.x < self.size.width
@@ -132,25 +163,41 @@ extension HeroScene{
     }
 }
 
+/// MARK: 碰撞代理
 extension HeroScene: SKPhysicsContactDelegate{
     
     func didBegin(_ contact: SKPhysicsContact) {
-        playMusic()
-        
         if contact.bodyA.node == fistNode ||
             contact.bodyB.node == fistNode{
             scorePlus()
+        }
+        
+        if contact.bodyA.node == floorNode{
+            contact.bodyB.node?.removeFromParent()
+        }
+        if contact.bodyB.node == floorNode{
+            contact.bodyA.node?.removeFromParent()
+        }
+        
+        if contact.bodyA.node == fistNode{
+            explode(point: (contact.bodyB.node?.position)!)
+            contact.bodyB.node?.removeFromParent()
+        }
+        if contact.bodyB.node == fistNode{
+            explode(point: (contact.bodyA.node?.position)!)
+            contact.bodyA.node?.removeFromParent()
         }
     }
     
     func didEnd(_ contact: SKPhysicsContact) {
         
-        if contact.bodyA.node != fistNode{
-            contact.bodyA.node?.removeFromParent()
-        }
-        if contact.bodyB.node != fistNode{
-            contact.bodyB.node?.removeFromParent()
-        }
+//        if contact.bodyA.node != fistNode{
+//            explode(point: ( bodyB.node?.position)!)
+//            contact.bodyA.node?.removeFromParent()
+//        }
+//        if contact.bodyB.node != fistNode{
+//            contact.bodyB.node?.removeFromParent()
+//        }
     }
 }
 
