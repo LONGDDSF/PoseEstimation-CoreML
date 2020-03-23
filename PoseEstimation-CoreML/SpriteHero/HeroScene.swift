@@ -35,7 +35,7 @@ class HeroScene: SKScene {
     }
     /// MARK: 场景设置
     func setupScene() {
-        self.backgroundColor = SKColor(red: 80.0/255.0, green: 192.0/255.0, blue: 203.0/255.0, alpha: 1.0)
+//        self.backgroundColor = SKColor(red: 80.0/255.0, green: 192.0/255.0, blue: 203.0/255.0, alpha: 1.0)
         self.backgroundColor = SKColor.clear
         self.physicsWorld.gravity = CGVector(dx: 0, dy: -1.3)
         self.physicsWorld.contactDelegate = self
@@ -134,6 +134,7 @@ class HeroScene: SKScene {
         }
     }
     
+    /// MARK: 地板
     func addFloor(){
         floorNode = SKSpriteNode(imageNamed:"hero")
         floorNode.position = CGPoint(x: 0, y: 0)
