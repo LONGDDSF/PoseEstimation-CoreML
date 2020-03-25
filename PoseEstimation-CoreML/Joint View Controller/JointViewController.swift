@@ -77,7 +77,7 @@ class JointViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.videoCapture.start()
-        setupScene()
+//        setupScene()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
